@@ -11,6 +11,12 @@ function ok(name, cond, detail = '') {
 }
 const get = (p, o) => fetch(BASE + p, o);
 
+// Credentials for the throwaway test container, from the environment so no
+// literal password lives in the repo:
+//   CREDS='{"username":"testadmin","password":"..."}'
+const CREDS = JSON.parse(process.env.CREDS || '{"username":"testadmin","password":""}');
+
+
 // --- share enumeration ----------------------------------------------------
 let enumBlocked = 0;
 const letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -36,13 +42,13 @@ const codes = [];
 for (let i = 0; i < 8; i++) {
   const res = await get('/api/admin/login', {
     method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ username: 'testadmin', password: `wrong${i}` }) });
+    body: JSON.stringify({ username: CREDS.username, password: `wrong${i}` }) });
   codes.push(res.status);
 }
 ok('admin login locks out after repeated failures', codes.includes(429), codes.join(','));
 const stillLocked = await get('/api/admin/login', {
   method: 'POST', headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ username: 'testadmin', password: '<throwaway>' }) });
+  body: JSON.stringify(CREDS) });
 ok('lockout also blocks the correct password', stillLocked.status === 429, String(stillLocked.status));
 
 // --- upload abuse ---------------------------------------------------------

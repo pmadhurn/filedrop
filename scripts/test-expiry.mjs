@@ -15,6 +15,12 @@ function ok(name, cond, detail = '') {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Credentials for the throwaway test container, from the environment so no
+// literal password lives in the repo:
+//   CREDS='{"username":"testadmin","password":"..."}'
+const CREDS = JSON.parse(process.env.CREDS || '{"username":"testadmin","password":""}');
+
+
 async function j(path, opts = {}) {
   const res = await fetch(BASE + path, opts);
   let body = null;
@@ -131,7 +137,7 @@ await sleep(1000);
 // The hourly orphan pass also runs on demand from the admin dashboard; trigger it.
 const login = await fetch(`${BASE}/api/admin/login`, {
   method: 'POST', headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ username: 'testadmin', password: '<throwaway>' }) });
+  body: JSON.stringify(CREDS) });
 const cookie = (login.headers.getSetCookie?.() || []).join('; ').split(';')[0];
 const csrf = (await login.json()).csrf;
 await fetch(`${BASE}/api/admin/cleanup`, { method: 'POST', headers: { cookie, 'x-csrf-token': csrf } });

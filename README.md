@@ -171,8 +171,8 @@ docker run -d --name filedrop-test -p 127.0.0.1:8142:8140 \
 
 BASE=http://127.0.0.1:8142 CREDS='{"username":"testadmin","password":"<throwaway>"}' \
   node scripts/test.mjs        # uploads, downloads, limits, security, admin
-node scripts/test-expiry.mjs   # expiry, hard delete, ID reuse, restart persistence
-node scripts/test-limits.mjs   # rate limiting and brute-force lockout
+CREDS='{"username":"testadmin","password":"<throwaway>"}' node scripts/test-expiry.mjs
+CREDS='{"username":"testadmin","password":"<throwaway>"}' node scripts/test-limits.mjs
 node scripts/test-logrotate.mjs
 node scripts/test-bigfile.mjs   # 5 GB round trip against the production instance
 ```
