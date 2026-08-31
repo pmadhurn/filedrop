@@ -15,7 +15,7 @@ short link, and everything is hard-deleted 24 hours later.
 Browser
   │  https
   ▼
-Cloudflare  ──► Cloudflare Tunnel (host cloudflared, cloudflared on the host)
+Cloudflare  ──► Cloudflare Tunnel (cloudflared on the host)
                    │
                    ├── link.madhur.dev ─► 127.0.0.1:8140   FileDrop (docker)
                    │
@@ -113,8 +113,10 @@ Cloudflare Tunnel ingress (`/etc/cloudflared/config.yml` on the host):
 and the DNS record:
 
 ```bash
+# TUNNEL_ID and the origin certificate path come from your own cloudflared
+# setup: `cloudflared tunnel list` and the `origincert:` line in config.yml.
 sudo cloudflared --origincert /path/to/cert.pem \
-  tunnel route dns $TUNNEL_ID link.madhur.dev
+  tunnel route dns "$TUNNEL_ID" link.example.com
 sudo systemctl restart cloudflared
 ```
 
@@ -164,7 +166,7 @@ requests than a person would) and point the scripts at it:
 
 ```bash
 docker run -d --name filedrop-test -p 127.0.0.1:8142:8140 \
-  -e ADMIN_USERNAME=testadmin -e ADMIN_PASSWORD=<throwaway> \
+  -e ADMIN_USERNAME=testadmin -e ADMIN_PASSWORD='<throwaway>' \
   -e RATE_LIMIT_FACTOR=500 -v filedrop-test-data:/data filedrop:latest
 
 BASE=http://127.0.0.1:8142 CREDS='{"username":"testadmin","password":"<throwaway>"}' \
