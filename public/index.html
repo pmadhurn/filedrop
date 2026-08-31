@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>FileDrop — temporary file sharing</title>
+<meta name="description" content="Share files with a short link that disappears after 24 hours." />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#070b18" />
+<link rel="stylesheet" href="/assets/styles.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>" />
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <a class="brand" href="/"><span class="mark">📦</span> FileDrop</a>
+    <span class="top-note" id="topNote">Links expire after 24 hours</span>
+  </header>
+
+  <main class="glass hero" id="main">
+    <!-- upload -->
+    <section id="pickStage">
+      <h1>Share your files</h1>
+      <p class="sub">Drop files, get a short link. Everything is deleted automatically after <span id="expiryHours">24</span> hours.</p>
+
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Select files to upload">
+        <span class="icon" aria-hidden="true">⬆️</span>
+        <h2>Drag &amp; drop files here</h2>
+        <span class="or">or</span>
+        <button type="button" class="primary" id="pickBtn">Select files</button>
+        <p style="margin-top:14px">Maximum <span id="maxSize">20 GB</span> per batch · <span id="remaining"></span></p>
+      </div>
+      <input type="file" id="fileInput" multiple hidden />
+
+      <div class="file-list" id="fileList"></div>
+
+      <div class="options" id="options" hidden>
+        <div class="option-card">
+          <label class="field" for="password">Password (optional)</label>
+          <input type="password" id="password" autocomplete="new-password" placeholder="Leave empty for none" />
+          <p class="hint">Recipients must enter it before they see the files.</p>
+        </div>
+        <div class="option-card">
+          <label class="field" for="limitMode">Download limit</label>
+          <select id="limitMode">
+            <option value="unlimited">Unlimited</option>
+            <option value="1">1 download</option>
+            <option value="5">5 downloads</option>
+            <option value="10">10 downloads</option>
+            <option value="custom">Custom…</option>
+          </select>
+          <input type="number" id="limitCustom" min="1" max="1000000" placeholder="Number of downloads" style="margin-top:10px" hidden />
+          <p class="hint">Counted per file download, across everyone with the link.</p>
+        </div>
+      </div>
+
+      <div class="row end" id="actions" hidden style="margin-top:22px">
+        <span class="muted" id="batchTotal"></span>
+        <span class="spacer"></span>
+        <button type="button" class="ghost" id="clearBtn">Clear</button>
+        <button type="button" class="primary" id="uploadBtn">Upload &amp; get link</button>
+      </div>
+
+      <div class="notice hidden" id="pickError"></div>
+
+      <div class="notice info hidden" id="resumePanel">
+        <strong>Unfinished upload found.</strong>
+        <span id="resumeText"></span>
+        <div class="row" style="margin-top:12px">
+          <button type="button" class="small primary" id="resumePick">Select the same files to resume</button>
+          <button type="button" class="small ghost" id="resumeDiscard">Discard</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- progress -->
+    <section id="progressStage" hidden>
+      <div class="progress-head">
+        <div>
+          <h1 style="margin:0">Uploading…</h1>
+          <p class="sub" style="margin:4px 0 0" id="currentFile"></p>
+        </div>
+        <div class="pct" id="pct">0%</div>
+      </div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="progress-meta">
+        <span id="bytesMeta">0 B / 0 B</span>
+        <span id="speedMeta">—</span>
+        <span id="etaMeta">—</span>
+        <span id="retryMeta" class="warn" hidden></span>
+      </div>
+      <div class="file-list" id="progressFiles"></div>
+      <div class="row" style="margin-top:22px">
+        <button type="button" id="pauseBtn">Pause</button>
+        <button type="button" class="danger" id="cancelBtn">Cancel</button>
+      </div>
+      <div class="notice hidden" id="uploadError"></div>
+    </section>
+
+    <!-- result -->
+    <section id="doneStage" hidden>
+      <h1>Your files are ready</h1>
+      <p class="sub">Anyone with this link can download them until it expires.</p>
+      <div class="link-box">
+        <code id="shareUrl"></code>
+        <button type="button" class="primary" id="copyBtn">Copy link</button>
+      </div>
+      <div class="row" id="sharePills"></div>
+      <div class="file-list" id="doneFiles"></div>
+      <div class="row" style="margin-top:24px">
+        <a class="btn" id="openLink" href="#" target="_blank" rel="noopener">Open share page</a>
+        <button type="button" class="ghost" id="againBtn">Share something else</button>
+      </div>
+      <p class="hint" id="altUrl"></p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    Files are removed automatically when the link expires. <a href="/admin">Admin</a>
+  </footer>
+</div>
+<script type="module" src="/assets/app.js"></script>
+</body>
+</html>

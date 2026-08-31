@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin — FileDrop</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#070b18" />
+<link rel="stylesheet" href="/assets/styles.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>" />
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <a class="brand" href="/"><span class="mark">🛠️</span> FileDrop admin</a>
+    <div class="row">
+      <span class="top-note" id="healthNote"></span>
+      <button class="small ghost hidden" id="logoutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <main class="stack">
+    <section class="glass hero" id="loginStage" hidden>
+      <h1>Sign in</h1>
+      <p class="sub">Administrator access only.</p>
+      <form id="loginForm" style="max-width:420px">
+        <label class="field" for="u">Username</label>
+        <input type="text" id="u" autocomplete="username" required />
+        <label class="field" for="p" style="margin-top:14px">Password</label>
+        <input type="password" id="p" autocomplete="current-password" required />
+        <div class="row" style="margin-top:18px"><button class="primary" id="loginBtn" type="submit">Sign in</button></div>
+      </form>
+      <div class="notice hidden" id="loginError"></div>
+    </section>
+
+    <section class="glass hero" id="dash" hidden>
+      <h2 class="section">Overview</h2>
+      <div class="grid-stats" id="stats"></div>
+      <div style="margin-top:18px">
+        <div class="bar"><i id="storageBar"></i></div>
+        <p class="hint" id="storageText"></p>
+      </div>
+      <div class="row" style="margin-top:18px">
+        <button class="small" id="refreshBtn">Refresh</button>
+        <button class="small ghost" id="cleanupBtn">Run cleanup now</button>
+      </div>
+    </section>
+
+    <section class="glass hero" id="sharesCard" hidden>
+      <h2 class="section">Active shares (<span id="shareCount">0</span>)</h2>
+      <div class="table-wrap">
+        <table class="shares">
+          <thead><tr>
+            <th>ID</th><th>Files</th><th>Size</th><th>Created</th><th>Expires</th>
+            <th>Downloads</th><th>Protection</th><th></th>
+          </tr></thead>
+          <tbody id="shareRows"></tbody>
+        </table>
+      </div>
+      <p class="hint" id="noShares" hidden>No active shares.</p>
+    </section>
+
+    <section class="glass hero" id="healthCard" hidden>
+      <h2 class="section">System health</h2>
+      <div class="grid-stats" id="healthGrid"></div>
+    </section>
+
+    <section class="glass hero" id="logsCard" hidden>
+      <h2 class="section">Recent logs <span class="muted" id="logStats" style="font-size:0.8rem"></span></h2>
+      <pre class="logs" id="logs"></pre>
+    </section>
+  </main>
+</div>
+<script type="module" src="/assets/admin.js"></script>
+</body>
+</html>

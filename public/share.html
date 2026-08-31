@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Shared files — FileDrop</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#070b18" />
+<link rel="stylesheet" href="/assets/styles.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>" />
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <a class="brand" href="/"><span class="mark">📦</span> FileDrop</a>
+    <span class="top-note" id="expiryNote"></span>
+  </header>
+
+  <main class="glass hero">
+    <section id="loading"><p class="muted">Loading…</p></section>
+
+    <section id="lockStage" hidden>
+      <h1>🔒 Password required</h1>
+      <p class="sub">This share is password protected.</p>
+      <form id="pwForm" autocomplete="off" style="max-width:420px">
+        <label class="field" for="pw">Password</label>
+        <input type="password" id="pw" autocomplete="current-password" required />
+        <div class="row" style="margin-top:16px">
+          <button type="submit" class="primary" id="pwBtn">Continue</button>
+        </div>
+      </form>
+      <div class="notice hidden" id="pwError"></div>
+    </section>
+
+    <section id="filesStage" hidden>
+      <h1>Shared files</h1>
+      <p class="sub" id="shareSummary"></p>
+      <div class="row" id="sharePills" style="margin-bottom:18px"></div>
+      <div class="file-list" id="files"></div>
+      <div class="notice hidden" id="fileError"></div>
+    </section>
+
+    <section id="goneStage" hidden>
+      <h1>Link unavailable</h1>
+      <p class="sub" id="goneText">This link is not available. It may have expired or been removed.</p>
+      <div class="row" style="margin-top:20px"><a class="btn primary" href="/">Share your own files</a></div>
+    </section>
+  </main>
+
+  <footer class="foot">Files are removed automatically when the link expires.</footer>
+</div>
+<script type="module" src="/assets/share.js"></script>
+</body>
+</html>
