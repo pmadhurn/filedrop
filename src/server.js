@@ -40,6 +40,21 @@ app.addContentTypeParser('*', (req, payload, done) => done(null, payload));
 
 await app.register(cookie, { secret: config.sessionSecret });
 
+// Cross-origin uploads, only from the origins in CORS_ORIGINS and only for the upload API.
+// Preflights are answered here, before rate limiting and routing.
+app.addHook('onRequest', async (req, reply) => {
+  const origin = req.headers.origin;
+  if (!origin || !config.corsOrigins.includes(origin) || !req.url.startsWith('/api/uploads')) return;
+  reply.header('Access-Control-Allow-Origin', origin);
+  reply.header('Vary', 'Origin');
+  if (req.method === 'OPTIONS') {
+    reply.header('Access-Control-Allow-Methods', 'POST, PUT, GET, DELETE');
+    reply.header('Access-Control-Allow-Headers', 'content-type, x-upload-token, x-chunk-sha256');
+    reply.header('Access-Control-Max-Age', '600');
+    return reply.code(204).send();
+  }
+});
+
 await app.register(rateLimit, {
   global: true,
   max: 300 * config.rateFactor,

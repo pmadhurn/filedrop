@@ -9,6 +9,7 @@ services:
       DATA_DIR: /data
       PORT: "8140"
       NODE_ENV: production
+      CORS_ORIGINS: https://id.madhur.dev
     volumes:
       # Database, uploaded files, in-progress chunks and logs all live here.
       - filedrop-data:/data

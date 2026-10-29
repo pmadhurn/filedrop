@@ -107,6 +107,8 @@ export const config = {
     level: str('LOG_LEVEL', 'info'),
   },
   publicBaseUrl: str('PUBLIC_BASE_URL', 'https://link.madhur.dev').replace(/\/+$/, ''),
+  // Other sites allowed to create shares from the browser (comma-separated origins).
+  corsOrigins: str('CORS_ORIGINS', '').split(',').map((s) => s.trim()).filter(Boolean),
   secondaryBaseUrl: str('SECONDARY_BASE_URL', '').replace(/\/+$/, ''),
   reserved,
   cleanupIntervalMs: Math.round(num('CLEANUP_INTERVAL_SECONDS', 60) * 1000),
